@@ -22,34 +22,34 @@
 </template>
 
 <script>
- import { reactive, toRefs } from 'vue'
- //import vueValidate from'vee-validate'
- import products from '../services/products'
- import {Product} from '../services/productData'
-    // Vue.use(vueValidate);
+import { reactive, toRefs } from 'vue';
+// import vueValidate from'vee-validate'
+import products from '../services/products';
+import { Product } from '../services/productData';
+// Vue.use(vueValidate);
 export default ({
-  setup(){
-    const state = reactive({ 
+  setup() {
+    const state = reactive({
       name: '',
       price: '',
-      model: ''
+      model: '',
     });
 
     const addProduct = async () => {
       console.log('aaaaaaaaaaaa', {
-        name: state.name, price: state.price, model: state.model
+        name: state.name, price: state.price, model: state.model,
       });
       const product = await products.createProduct({
-        name: state.name, price: state.price, model: state.model
+        name: state.name, price: state.price, model: state.model,
       });
-      console.log(product,"Lakhsm");
-    }
+      console.log(product, 'Lakhsm');
+    };
     return {
       ...toRefs(state),
-      addProduct
+      addProduct,
     };
   },
-  })
+});
 </script>
 
 <style scoped>

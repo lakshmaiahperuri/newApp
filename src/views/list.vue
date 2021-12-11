@@ -18,7 +18,7 @@
            <div slot="actionFields" slot-scope="props">
               <button class="button is-primary"  @click.prevent="addToCart(props.rowData)">
                 Add to Cart</button>
-                 <b-modal :active.sync="isComponentModalActive"
+                 <b-modal v-model:active="isComponentModalActive"
                  has-modal-card
                  trap-focus
                  aria-role="dialog"
@@ -33,72 +33,73 @@
 </template>
 
 <script>
-import productList from '../views/productList';
+import Vuetable from 'vuetable-2';
+import { mapState } from 'vuex';
+import productList from './productList';
 import products from '../services/products';
-import Vuetable from 'vuetable-2'
-import Product from '../services/productData'
-import modal from '../components/components/modal'
-import { mapState } from 'vuex'
+import Product from '../services/productData';
+import modal from '../components/components/modal';
+
 export default {
-components:{
-  productList,
-  Vuetable,
-  modal
-},
-data(){
-  return{
-    search:'',
-    productList:[],
-    headers:[
-         {
-          name: "name",
-          title: "Product Name",
-          width: "34.5%"
+  components: {
+    productList,
+    Vuetable,
+    modal,
+  },
+  data() {
+    return {
+      search: '',
+      productList: [],
+      headers: [
+        {
+          name: 'name',
+          title: 'Product Name',
+          width: '34.5%',
         },
-         {
-          name: "model",
+        {
+          name: 'model',
           title: '<i class="fa fa"></i>Model ',
-          width: "24%"
-       },
-        {
-          name: "price",
-          title: "Price",
-          width: "30%"
+          width: '24%',
         },
         {
-        name:"actionFields",
-        title:"Actions",
-        width:"60%"
-        }
-    ],
-     productsList:[],
+          name: 'price',
+          title: 'Price',
+          width: '30%',
+        },
+        {
+          name: 'actionFields',
+          title: 'Actions',
+          width: '60%',
+        },
+      ],
+      productsList: [],
       _id: this.$route.params._id,
-      product:{
+      product: {
       },
-      isComponentModalActive:false
-  }
-},
- async created(){
-   let res2='';
-    res2=  await products.productList();
-    this.productList=res2;
-},
-methods:{
-   async searchList(search){
-     let res='';
-    res= await products.productListBySearch(search);
-    this.productList=res;
-    console.log(res);
-    console.log(this.productList);
-},
- async addToCart(product){
-             console.log("!!!!!!!!!!!!!!!!!!!", product);
-             this.product = product;
-             this.isComponentModalActive = true
-            //  return await products.purchaseProducts(product);
-          }
-}
-}
+      isComponentModalActive: false,
+    };
+  },
+  async created() {
+    let res2 = '';
+    res2 = await products.productList();
+    this.productList = res2;
+  },
+  methods: {
+    async searchList(search) {
+      let res = '';
+      res = await products.productListBySearch(search);
+      this.productList = res;
+      console.log(res);
+      console.log(this.productList);
+    },
+    async addToCart(product) {
+      console.log('!!!!!!!!!!!!!!!!!!!', product);
+      this.product = product;
+      this.isComponentModalActive = true;
+      //  return await products.purchaseProducts(product);
+    },
+  },
+};
 </script>
 
 <style scoped>

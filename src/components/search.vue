@@ -4,14 +4,14 @@
 
 <script>
 export default {
-components:{
-},
-data(){
-  return{
-    search:"",
-  }
-}
-}
+  components: {
+  },
+  data() {
+    return {
+      search: '',
+    };
+  },
+};
 </script>
 
 <style>

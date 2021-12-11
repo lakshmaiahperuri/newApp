@@ -1,6 +1,6 @@
 <template>
-<o-modal :active.sync="isImageModalActive">
-      
+<o-modal v-model:active="isImageModalActive">
+
       <form action="">
   <p>{{getCurrentUser}}</p>
                 <div class="modal-card" style="width: auto">
@@ -33,50 +33,50 @@
     </o-modal>
 
  </template>
- <script>
-import products from '../services/products'
-import {mapState} from 'vuex';
+<script>
+import { mapState } from 'vuex';
+import products from '../services/products';
+
 export default {
-  props:["product"],
-   data() {
+  props: ['product'],
+  data() {
     return {
-       isOpen: false,
-       quantity:"",
-       deliveryLocation:"",
-       owner:"",
+      isOpen: false,
+      quantity: '',
+      deliveryLocation: '',
+      owner: '',
     };
   },
-  computed:{
-    ...mapState(["currentUser"]),
-          getCurrentUser() {
-            let res="";
-          console.log(">>>>", this.currentUser);
-            res= this.currentUser;
-         this.owner= res;
-          console.log("owner123",this.owner);
-  }
+  computed: {
+    ...mapState(['currentUser']),
+    getCurrentUser() {
+      let res = '';
+      console.log('>>>>', this.currentUser);
+      res = this.currentUser;
+      this.owner = res;
+      console.log('owner123', this.owner);
+    },
   },
-  methods:{
-    async orderNow(product){
-             console.log("proooooooo",this.quantity, this.deliveryLocation);
-             product.quantity = this.quantity;
-             product.price= parseInt(this.quantity*product.price);
-             product.deliveryLocation = this.deliveryLocation;
-             product.owner= this.owner;
-             console.log('priceeeeeeeeeeeeeeee',product.price);
-             if(product.quantity==""||product.deliveryLocation==""){
-             alert("please fill all the details");
-          }
-          else{
-             alert("added successfully");
-             this.isOpen=false;
-            return await products.purchaseProducts(product);
-            console.log('overrrrrrrrrrrr');
-          }
-          }
+  methods: {
+    async orderNow(product) {
+      console.log('proooooooo', this.quantity, this.deliveryLocation);
+      product.quantity = this.quantity;
+      product.price = parseInt(this.quantity * product.price);
+      product.deliveryLocation = this.deliveryLocation;
+      product.owner = this.owner;
+      console.log('priceeeeeeeeeeeeeeee', product.price);
+      if (product.quantity == '' || product.deliveryLocation == '') {
+        alert('please fill all the details');
+      } else {
+        alert('added successfully');
+        this.isOpen = false;
+        return await products.purchaseProducts(product);
+        console.log('overrrrrrrrrrrr');
+      }
+    },
   },
   // created() {
   //   console.log("11111111111111111111111111111111",this.product.name);
   // }
-}
+};
 </script>

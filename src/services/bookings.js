@@ -1,60 +1,60 @@
-import axios from "axios";
+import axios from 'axios';
 
-const apiServer= axios.create({
-  baseURL:"http://localhost:4000",
-  withCredentials:false,
+const apiServer = axios.create({
+  baseURL: 'http://localhost:4000',
+  withCredentials: false,
   headers: {
-    Accept: "application/json",
-    "content-type": "application/json"
-  }
+    Accept: 'application/json',
+    'content-type': 'application/json',
+  },
 });
-export default{
+export default {
 
-  //Adding a product
-  create(booking){
-   return apiServer.post("/posts/productAdd",
-   {
-     id:booking.id,
-     type:booking.type,
-     name:booking.name,
-     email:booking.email,
-     number:booking.number,
-     date:booking.date,
-     from:booking.from,
-     to:booking.to
-   });
+  // Adding a product
+  create(booking) {
+    return apiServer.post('/posts/productAdd',
+      {
+        id: booking.id,
+        type: booking.type,
+        name: booking.name,
+        email: booking.email,
+        number: booking.number,
+        date: booking.date,
+        from: booking.from,
+        to: booking.to,
+      });
   },
   // Getting list of all the products
-  productList(){
-    return apiServer.get(`/posts/productList/`);
+  productList() {
+    return apiServer.get('/posts/productList/');
   },
-  productListBySearch(search){
+  productListBySearch(search) {
     return apiServer.get(`/posts/productList/${search}`);
   },
-  deleteProduct(id){
-    return apiServer.delete(`/posts/delete/${id}`)
+  deleteProduct(id) {
+    return apiServer.delete(`/posts/delete/${id}`);
   },
-  purchaseProducts(product){
-    return apiServer.post(`posts/purchase`,{
-      id:product.id,
-      name:product.name,
-      price:product.price,
-      model:product.model,
-      quantity:product.quantity,
-      deliveryLocation:product.deliveryLocation,
-      owner:product.owner
+  purchaseProducts(product) {
+    return apiServer.post('posts/purchase', {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      model: product.model,
+      quantity: product.quantity,
+      deliveryLocation: product.deliveryLocation,
+      owner: product.owner,
     });
   },
-  //getting purchased productList
-  getPurchasedList(){
-    return apiServer.get(`/posts/purchasedProducts`);
+  // getting purchased productList
+  getPurchasedList() {
+    return apiServer.get('/posts/purchasedProducts');
   },
-  //count for all the products
-  getProductCount(){
-    return apiServer.get(`/posts/productCount`);
+  // count for all the products
+  getProductCount() {
+    return apiServer.get('/posts/productCount');
   },
-   //count for all the purchased products
-   getPurchaseCount(){
-    return apiServer.get(`/posts/purchaseCount`);
-  }
-}
+  // count for all the purchased products
+  getPurchaseCount() {
+    return apiServer.get('/posts/purchaseCount');
+  },
+};

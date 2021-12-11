@@ -20,12 +20,12 @@
       <p>{{userName}}</p>
     </div>
    <!-- <o-table :data="data" :columns="columns"></o-table> -->
-    <!-- <modal 
+    <!-- <modal
       v-if="isComponentModalActive"
       :product="product"
     ></modal> -->
-    <o-modal :active.sync="isComponentModalActive">
-      
+    <o-modal v-model:active="isComponentModalActive">
+
                     <div class="modal-card" style="width: auto">
                     <header class="modal-card-head">
                         <p class="modal-card-title">Delivery Details</p>
@@ -63,108 +63,107 @@
                         <o-button variant="primary" @click="orderNow(product)">Order Now</o-button>
                     </footer>
                 </div>
-          
 
     </o-modal>
   </div>
 </template>
 <script>
-import pro from '../services/products'
-import Product from '../services/productData'
-import { useStore } from 'vuex';
+import { useStore, mapState } from 'vuex';
+import {
+  defineComponent, ref, reactive, onMounted, toRefs, $oruga,
+} from 'vue';
+import pro from '../services/products';
+import Product from '../services/productData';
 import modal from '../components/modal.vue';
-import { mapState } from 'vuex'
-import { defineComponent, ref, reactive, onMounted, toRefs,$oruga } from 'vue';
 
 export default defineComponent({
   name: 'productList',
   components: {
   },
   setup() {
-    const products= ref([]);
+    const products = ref([]);
     const store = useStore();
     const state = reactive({
       tableData: [],
-      userName:'',
-      userRole:'',
-      rowProduct:{},
-      quantity:'',
-      deliveryLocation:'',
-      owner:'Lakshmaiah',
+      userName: '',
+      userRole: '',
+      rowProduct: {},
+      quantity: '',
+      deliveryLocation: '',
+      owner: 'Lakshmaiah',
       cardLoaded: false,
       isModalActive: false,
       isComponentModalActive: false,
       columns: [
-      {
-        field: 'name',
-        label: 'Product Name',
-        width:'22%'
-      },
-      {
-        field: 'price',
-        label: 'Product Price',
-        position: 'centered',
-        width:'12%'
-      },
+        {
+          field: 'name',
+          label: 'Product Name',
+          width: '22%',
+        },
+        {
+          field: 'price',
+          label: 'Product Price',
+          position: 'centered',
+          width: '12%',
+        },
 
-      {
-        field: "model",
-        label: "Product Model",
-        width:'22%'
-      },
-      {
-        field: "actionFields",
-        label: "Actions",
-        hasHeaderSlot: true,
-        width:'22%'
-      },
-    ],
+        {
+          field: 'model',
+          label: 'Product Model',
+          width: '22%',
+        },
+        {
+          field: 'actionFields',
+          label: 'Actions',
+          hasHeaderSlot: true,
+          width: '22%',
+        },
+      ],
     });
-    const loadData =  async () => {
+    const loadData = async () => {
       const data = await pro.productList();
       state.tableData = data.data;
       state.cardLoaded = true;
-      state.userName = store.state.loggedInUser.data.user.name
-      state.userRole = store.state.loggedInUser.data.user.role
-      console.log(state.userRole, "loooooo");
-
+      state.userName = store.state.loggedInUser.data.user.name;
+      state.userRole = store.state.loggedInUser.data.user.role;
+      console.log(state.userRole, 'loooooo');
     };
     const deleteProducts = async (id) => {
-      console.log("Lakshma")
-       await pro.deleteProduct(id);
-       $oruga.notification.open('Something happened')
-       state.cardLoaded= false;
-       await loadData();
-      console.log("Lakshma")
-    }
+      console.log('Lakshma');
+      await pro.deleteProduct(id);
+      $oruga.notification.open('Something happened');
+      state.cardLoaded = false;
+      await loadData();
+      console.log('Lakshma');
+    };
     const addToCart = async (product) => {
-      console.log(product, "qwertyjhgfdsdfghj");
-       state.isComponentModalActive = true;
-       state.rowProduct= product;
-       console.log("modalllllllllllll");
-    }
+      console.log(product, 'qwertyjhgfdsdfghj');
+      state.isComponentModalActive = true;
+      state.rowProduct = product;
+      console.log('modalllllllllllll');
+    };
     const orderNow = async (rowProduct) => {
-      console.log(state.rowProduct, "qwertyjhgfdsdfghj");
-       state.isComponentModalActive = false;
-       state.rowProduct.price = parseInt(state.rowProduct.price * state.quantity)
-       const orderedProduct = await pro.purchaseProducts({
-         ...state.rowProduct,
-         quantity: state.quantity, 
-         deliveryLocation: state.deliveryLocation,
-         owner: 'lakshmaiah'
-       })
-       alert("product ordered");
-       await addToCart();
-       console.log(orderedProduct, "ooooooooooooo");
-    }
-    const isDisabled = async()=>{
-      return state.userRole === "admin";
-    }
+      console.log(state.rowProduct, 'qwertyjhgfdsdfghj');
+      state.isComponentModalActive = false;
+      state.rowProduct.price = parseInt(state.rowProduct.price * state.quantity);
+      const orderedProduct = await pro.purchaseProducts({
+        ...state.rowProduct,
+        quantity: state.quantity,
+        deliveryLocation: state.deliveryLocation,
+        owner: 'lakshmaiah',
+      });
+      alert('product ordered');
+      await addToCart();
+      console.log(orderedProduct, 'ooooooooooooo');
+    };
+    const isDisabled = async () => state.userRole === 'admin';
     onMounted(async () => {
       await loadData();
-      console.log(state.tableData, "laalaal");
+      console.log(state.tableData, 'laalaal');
     });
-    return {  products, ...toRefs(state), loadData ,deleteProducts,addToCart, orderNow};
+    return {
+      products, ...toRefs(state), loadData, deleteProducts, addToCart, orderNow,
+    };
   },
 });
 </script>

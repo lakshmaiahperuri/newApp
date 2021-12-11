@@ -24,30 +24,31 @@
 </template>
 
 <script>
- import { reactive, toRefs } from 'vue'
- import users from '../services/users'
+import { reactive, toRefs } from 'vue';
+import users from '../services/users';
+
 export default ({
-  setup(){
-    const state = reactive({ 
+  setup() {
+    const state = reactive({
       name: '',
       email: '',
       mobile: '',
-      password:'',
+      password: '',
     });
 
     const addUser = async () => {
       console.log('aaaaaaaaaaaa', {
-        name: state.name, email: state.email, mobile: state.mobile, password:state.password
+        name: state.name, email: state.email, mobile: state.mobile, password: state.password,
       });
       const user = await users.createUser({
-        name: state.name, email: state.email, mobile: state.mobile, password:state.password, role:'admin'
+        name: state.name, email: state.email, mobile: state.mobile, password: state.password, role: 'admin',
       });
-      console.log(product,"Lakhsm");
-    }
+      console.log(product, 'Lakhsm');
+    };
     return {
       ...toRefs(state),
-      addUser
+      addUser,
     };
   },
-  })
+});
 </script>

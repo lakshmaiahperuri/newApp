@@ -3,12 +3,13 @@
 </template>
 
 <script>
-import addProduct from '../views/productAdd.vue'
+import addProduct from '../views/productAdd.vue';
+
 export default {
-components:{
-  addProduct,
-}
-}
+  components: {
+    addProduct,
+  },
+};
 </script>
 
 <style>

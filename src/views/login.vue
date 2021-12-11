@@ -43,44 +43,42 @@
   </div>
 </section>
 
-
 </template>
 <script>
-import { reactive, toRefs} from 'vue'
+import { reactive, toRefs } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import users from '../services/users'
+import users from '../services/users';
 
 export default ({
-  setup(){
-    const state = reactive({ 
+  setup() {
+    const state = reactive({
       email: '',
-      password:''
+      password: '',
     });
     const store = useStore();
     const router = useRouter();
     const loginUser = async () => {
       console.log('aaaaaaaaaaaa', {
-        name: state.name, email: state.email, mobile: state.mobile, password:state.password
+        name: state.name, email: state.email, mobile: state.mobile, password: state.password,
       });
       const user = await users.login({
-       email: state.email, password:state.password
+        email: state.email, password: state.password,
       });
-      store.commit("setLoggedInUser", user);
-      console.log('userrrrrrrrrrrrr', user.data.user.role)
-      if(user.data.user.role === 'admin'){
-      router.push({ path: '/add' });
+      store.commit('setLoggedInUser', user);
+      console.log('userrrrrrrrrrrrr', user.data.user.role);
+      if (user.data.user.role === 'admin') {
+        router.push({ path: '/add' });
+      } else {
+        router.push({ path: '/list' });
       }
-      else{
-        router.push({ path: '/list' })
-      }
-      console.log(product,"Lakhsm");
-    }
+      console.log(product, 'Lakhsm');
+    };
     return {
       ...toRefs(state),
-      loginUser
+      loginUser,
     };
   },
-  })
+});
 
 </script>

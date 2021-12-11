@@ -1,9 +1,4 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-// import Oruga from '@oruga-ui/oruga-next'
-
+import { createApp } from 'vue';
 import {
   Button,
   Checkbox,
@@ -25,8 +20,13 @@ import {
   Switch,
   Table,
   Tabs,
-  Toast
+  Toast,
 } from '@oruga-ui/oruga-next';
+import App from './App.vue';
+import router from './router';
+import store from './store';
+// import Oruga from '@oruga-ui/oruga-next'
+
 // import App from './App.vue';
 // import router from './router/router';
 // import store from './store/store';
