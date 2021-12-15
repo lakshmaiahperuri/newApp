@@ -2,7 +2,9 @@
   <div>
   <span class="icon">
   </span>
-  <span ><button class="button">My Orders </button></span>
+  <span ><router-link to="/purchaseList">
+    <button class="button">My Orders </button>
+    </router-link></span>
   <span ><button class="button" @click="logOut()">LogOut </button></span>
     <span class="icon-text" @click="logOut()">  
   <span class="icon">
