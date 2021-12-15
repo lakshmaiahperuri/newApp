@@ -1,5 +1,14 @@
 <template>
   <div>
+  <span class="icon">
+  </span>
+  <span ><button class="button">My Orders </button></span>
+  <span ><button class="button" @click="logOut()">LogOut </button></span>
+    <span class="icon-text" @click="logOut()">  
+  <span class="icon">
+  </span>
+</span>
+
     <o-table v-if="cardLoaded" :data="tableData" >
      <template v-for="column in columns" :key="column.id">
         <o-table-column  v-bind="column">
@@ -8,7 +17,8 @@
           </template>
           <template v-else-if="column.hasHeaderSlot" v-slot="props">
             <!-- <button class="button is-danger" @click="deleteProducts(props.row._id)">Delete</button> -->
-              <o-button type="button" :disabled="isDisabled" @click="addToCart(props.row)">Add to Cart</o-button>
+              <o-button id="button1" type="button" variant="success" :disabled="isDisabled1" @click="addToCart(props.row)">Add to Cart</o-button>
+              <o-button type="button" variant="danger" icon-left="trash" :disabled="isDisabled" @click="deleteProduct(props.row._id)">Delete</o-button>
           </template>
           <template v-else v-slot="props">
             {{ props.row[column.field] }}
@@ -17,14 +27,8 @@
       </template>
     </o-table>
     <div >
-      <p>{{userName}}</p>
     </div>
-   <!-- <o-table :data="data" :columns="columns"></o-table> -->
-    <!-- <modal
-      v-if="isComponentModalActive"
-      :product="product"
-    ></modal> -->
-    <o-modal v-model:active="isComponentModalActive">
+    <o-modal :active="isComponentModalActive">
 
                     <div class="modal-card" style="width: auto">
                     <header class="modal-card-head">
@@ -69,13 +73,14 @@
 </template>
 <script>
 import { useStore, mapState } from 'vuex';
+import { useRouter } from 'vue-router';
 import {
-  defineComponent, ref, reactive, onMounted, toRefs, $oruga,
+  defineComponent, ref, reactive, onMounted, toRefs, $oruga, computed,
 } from 'vue';
 import pro from '../services/products';
 import Product from '../services/productData';
 import modal from '../components/modal.vue';
-
+import { useToast } from 'vue-toastification';
 export default defineComponent({
   name: 'productList',
   components: {
@@ -83,12 +88,15 @@ export default defineComponent({
   setup() {
     const products = ref([]);
     const store = useStore();
+    const toast = useToast();
+    const router = useRouter();
     const state = reactive({
       tableData: [],
       userName: '',
       userRole: '',
       rowProduct: {},
       quantity: '',
+      user:'',
       deliveryLocation: '',
       owner: 'Lakshmaiah',
       cardLoaded: false,
@@ -124,14 +132,14 @@ export default defineComponent({
       const data = await pro.productList();
       state.tableData = data.data;
       state.cardLoaded = true;
-      state.userName = store.state.loggedInUser.data.user.name;
-      state.userRole = store.state.loggedInUser.data.user.role;
+      state.userName = store.state.loggedInUser.name;
       console.log(state.userRole, 'loooooo');
     };
-    const deleteProducts = async (id) => {
+
+    const deleteProduct = async (id) => {
       console.log('Lakshma');
       await pro.deleteProduct(id);
-      $oruga.notification.open('Something happened');
+      toast.error('Product deleted')
       state.cardLoaded = false;
       await loadData();
       console.log('Lakshma');
@@ -142,6 +150,11 @@ export default defineComponent({
       state.rowProduct = product;
       console.log('modalllllllllllll');
     };
+    const close = () =>{
+      state.isComponentModalActive = false;
+      state.quantity = '', 
+      state.deliveryLocation = '';
+    }
     const orderNow = async (rowProduct) => {
       console.log(state.rowProduct, 'qwertyjhgfdsdfghj');
       state.isComponentModalActive = false;
@@ -150,19 +163,36 @@ export default defineComponent({
         ...state.rowProduct,
         quantity: state.quantity,
         deliveryLocation: state.deliveryLocation,
-        owner: 'lakshmaiah',
+        owner: store.state.loggedInUser.name
       });
-      alert('product ordered');
+      console.log(state.user, 'iddddd');
+      toast.success('product ordered successfuly');
       await addToCart();
+      close();
       console.log(orderedProduct, 'ooooooooooooo');
     };
-    const isDisabled = async () => state.userRole === 'admin';
+    const logOut = async() => {
+      localStorage.removeItem('auth-token', store.state.loggedInUser.token);
+      router.push({ path: '/' });
+    }
+    const isDisabled = computed(() => store.state.loggedInUser.role === 'user');
+    const isDisabled1 = computed(() => store.state.loggedInUser.role === 'admin');
     onMounted(async () => {
       await loadData();
       console.log(state.tableData, 'laalaal');
+      console.log('store', store.state.loggedInUser);
     });
     return {
-      products, ...toRefs(state), loadData, deleteProducts, addToCart, orderNow,
+      products, 
+      ...toRefs(state), 
+      loadData, 
+      deleteProduct, 
+      addToCart, 
+      orderNow, 
+      close,
+      isDisabled,
+      isDisabled1,
+      logOut
     };
   },
 });
@@ -171,5 +201,15 @@ export default defineComponent({
 <style scoped>
 #tableSection{
   background-color: blueviolet
+}
+.header{
+  
+}
+#button1{
+  margin-right: 15px;
+}
+.icon{
+  margin-left: 1200px;
+  
 }
 </style>

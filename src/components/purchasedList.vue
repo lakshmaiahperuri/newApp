@@ -65,7 +65,7 @@ export default defineComponent({
       ],
     });
     const loadData = async () => {
-      const data = await pro.getPurchasedList();
+      const data = await pro.getPurchasedList('vimalraj');
       state.tableData = data.data;
       state.cardLoaded = true;
       return state.tableData;

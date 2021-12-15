@@ -44,7 +44,7 @@ export default {
   },
   // getting purchased productList
   getPurchasedList() {
-    return apiServer.get('/posts/purchasedProducts');
+    return apiServer.get('/posts/purchasedProducts/');
   },
   // count for all the products
   getProductCount() {

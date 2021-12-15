@@ -2,7 +2,7 @@
   <nav class="navbar">
   <div class="navbar-brand">
     <router-link to="/menu">
-    <a class="navbar-item">LUCKY TOURS AND TRAVELS</a>
+    <a class="navbar-item">Product Management</a>
     </router-link>
   </div>
 </nav>

@@ -25,16 +25,13 @@
               </div>
             </div>
             <div class="field">
-              <label for="" class="checkbox">
-                <input type="checkbox">
-               Remember me
-              </label>
             </div>
             <div class="field">
               <button class="button is-success" @click.prevent="loginUser()">
                 Login
               </button>
-              <router-link to="/signup"><span class="icon"></span><b>Create New Account</b></router-link>
+               <o-icon pack="fas" icon="user" size="small"> </o-icon>
+              <router-link to="/addingUser"><span class="icon"></span><b>Create New Account</b></router-link>
             </div>
           </form>
         </div>
@@ -49,6 +46,7 @@ import { reactive, toRefs } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import users from '../services/users';
+import { useToast } from 'vue-toastification';
 
 export default ({
   setup() {
@@ -58,21 +56,29 @@ export default ({
     });
     const store = useStore();
     const router = useRouter();
+    const toast = useToast();
     const loginUser = async () => {
       console.log('aaaaaaaaaaaa', {
         name: state.name, email: state.email, mobile: state.mobile, password: state.password,
       });
-      const user = await users.login({
+      if(!state.email && !state.password) {
+      toast.error('invalid credentials');
+      }
+      const { data } = await users.login({
         email: state.email, password: state.password,
       });
-      store.commit('setLoggedInUser', user);
-      console.log('userrrrrrrrrrrrr', user.data.user.role);
-      if (user.data.user.role === 'admin') {
-        router.push({ path: '/add' });
+      const token = data.token;
+      toast.success('LoggedIn Successfully');
+      console.log(token, 'oopppps')
+      store.commit('setLoggedInUser', data.user);
+      localStorage.setItem('auth-token', token);
+      console.log('userrrrrrrrrrrrr', data.user.role);
+      if (data.user.role === 'admin') {
+        router.push({ path: '/menu' });
       } else {
         router.push({ path: '/list' });
       }
-      console.log(product, 'Lakhsm');
+      // console.log(product, 'Lakhsm');
     };
     return {
       ...toRefs(state),

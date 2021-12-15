@@ -8,7 +8,7 @@ import Login from '../views/login.vue';
 
 const routes = [
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     component: Login,
   },
@@ -23,7 +23,7 @@ const routes = [
     component: purchasedList,
   },
   {
-    path: '/add',
+    path: '/addProduct',
     name: 'adding',
     component: productAdd,
   },
@@ -51,5 +51,14 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
-
+// router.beforeEach(async (to, from, next) => {
+//   console.log(to, from, next);
+//   if (to.name === 'menu') {
+//     const token = localStorage.getItem('auth-token');
+//     if (!token) {
+//       return next({ path: 'login' });
+//     }
+//   }
+//   next();
+// });
 export default router;

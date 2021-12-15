@@ -20,11 +20,11 @@ import {
   Switch,
   Table,
   Tabs,
-  Toast,
 } from '@oruga-ui/oruga-next';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+import Toast from 'vue-toastification';
 // import Oruga from '@oruga-ui/oruga-next'
 
 // import App from './App.vue';
@@ -57,12 +57,11 @@ app.use(Steps);
 app.use(Switch);
 app.use(Table);
 app.use(Tabs);
-app.use(Toast);
 // app.use(Oruga);
 // https://maronato.github.io/vue-toastification/
 app.use(Toast, {
   position: 'top-center',
-  timeout: 5000,
+  timeout: 1000,
   closeOnClick: false,
   pauseOnHover: false,
   draggable: false,

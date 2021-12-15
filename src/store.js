@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 export default createStore({
   state: {
@@ -8,7 +9,9 @@ export default createStore({
   },
   mutations: {
     setLoggedInUser: (state, user) => {
+      console.log(user, 'storeeee');
       state.loggedInUser = user;
     },
   },
+  plugins: [createPersistedState()],
 });
