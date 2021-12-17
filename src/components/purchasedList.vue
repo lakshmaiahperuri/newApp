@@ -1,4 +1,6 @@
 <template>
+<section>
+  <mf-nav></mf-nav>
     <o-table v-if="cardLoaded" :data="tableData" >
      <template v-for="column in columns" :key="column.id">
         <o-table-column  v-bind="column">
@@ -11,24 +13,29 @@
         </o-table-column>
       </template>
     </o-table>
+</section>
 </template>
 
 <script>
 import {
   defineComponent, ref, reactive, onMounted, toRefs, $oruga,
 } from 'vue';
+import { useStore, mapState } from 'vuex';
 import pro from '../services/products';
+import navBar from '../components/navBar.vue';
 
 export default defineComponent({
   name: 'productList',
   components: {
+    'mf-nav': navBar
   },
   setup() {
     const products = ref([]);
+    const store = useStore();
     const state = reactive({
       tableData: [],
       rowProduct: {},
-      quantity: '',
+      user:'',
       deliveryLocation: '',
       owner: 'Lakshmaiah',
       cardLoaded: false,
@@ -65,7 +72,10 @@ export default defineComponent({
       ],
     });
     const loadData = async () => {
-      const data = await pro.getPurchasedList('vimalraj');
+      const data = await pro.getPurchasedList({
+        user: store.state.loggedInUser._id
+      });
+      console.log('storeeeeeeee', state.user)
       state.tableData = data.data;
       state.cardLoaded = true;
       return state.tableData;

@@ -1,5 +1,7 @@
 <template>
-<div class="columns is-centered">
+<section class="hero">
+  <div class="hero-body">
+   <div class="columns is-centered">
       <div class="column is-4">
         <div class="card">
        <p className="card-header-title is-centered"> User Details</p>
@@ -21,6 +23,8 @@
        </div>
         </div>
         </div>
+  </div>
+</section>
 </template>
 
 <script>
@@ -56,3 +60,11 @@ export default ({
   },
 });
 </script>
+<style scoped>
+.hero{
+  background-image: linear-gradient(to right bottom,#ffffff,#6dd5fa,#2980b9);
+}
+section{
+  height: 100vh;
+}
+</style>

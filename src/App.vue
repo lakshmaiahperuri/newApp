@@ -1,11 +1,11 @@
 <template>
-  <nav class="navbar">
+  <!-- <nav class="navbar">
   <div class="navbar-brand">
     <router-link to="/menu">
     <a class="navbar-item">Product Management</a>
     </router-link>
   </div>
-</nav>
+</nav> -->
   <router-view/>
 </template>
 

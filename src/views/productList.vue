@@ -1,16 +1,21 @@
 <template>
+<div >
+     <mf-nav ></mf-nav>
   <div>
-  <span class="icon">
+  </div>
+  <!-- <span class="icon">
   </span>
   <span ><router-link to="/purchaseList">
     <button class="button">My Orders </button>
     </router-link></span>
-  <span ><button class="button" @click="logOut()">LogOut </button></span>
-    <span class="icon-text" @click="logOut()">  
+  <span ><o-button class="button" @click="logOut()">LogOut </o-button></span>
+    <span class="icon-text" @click="logOut()"> 
   <span class="icon">
   </span>
-</span>
-
+</span> -->
+  <input type="text" v-model="search">
+  <o-button variant="primary" class="search" @click="searchProduct()">Search</o-button>
+<section>
     <o-table v-if="cardLoaded" :data="tableData" >
      <template v-for="column in columns" :key="column.id">
         <o-table-column  v-bind="column">
@@ -28,6 +33,7 @@
         </o-table-column>
       </template>
     </o-table>
+</section>
     <div >
     </div>
     <o-modal :active="isComponentModalActive">
@@ -81,11 +87,13 @@ import {
 } from 'vue';
 import pro from '../services/products';
 import Product from '../services/productData';
-import modal from '../components/modal.vue';
+import modal from '../components/navBar.vue';
 import { useToast } from 'vue-toastification';
+import navBar from '../components/navBar.vue';
 export default defineComponent({
   name: 'productList',
   components: {
+    'mf-nav': navBar
   },
   setup() {
     const products = ref([]);
@@ -94,11 +102,13 @@ export default defineComponent({
     const router = useRouter();
     const state = reactive({
       tableData: [],
+      search:'',
       userName: '',
       userRole: '',
       rowProduct: {},
       quantity: '',
-      user:'',
+      user: '',
+      product: '',
       deliveryLocation: '',
       owner: 'Lakshmaiah',
       cardLoaded: false,
@@ -131,13 +141,14 @@ export default defineComponent({
       ],
     });
     const loadData = async () => {
-      const data = await pro.productList();
+      const data = await pro.productList({
+        search: state.search
+      });
       state.tableData = data.data;
       state.cardLoaded = true;
       state.userName = store.state.loggedInUser.name;
       console.log(state.userRole, 'loooooo');
     };
-
     const deleteProduct = async (id) => {
       console.log('Lakshma');
       await pro.deleteProduct(id);
@@ -147,10 +158,11 @@ export default defineComponent({
       console.log('Lakshma');
     };
     const addToCart = async (product) => {
-      console.log(product, 'qwertyjhgfdsdfghj');
+      console.log(product, 'addToCArt');
       state.isComponentModalActive = true;
       state.rowProduct = product;
-      console.log('modalllllllllllll');
+      state.rowProduct.id = product;
+      console.log('product iddddddd', state.rowProduct._id);
     };
     const close = () =>{
       state.isComponentModalActive = false;
@@ -158,24 +170,32 @@ export default defineComponent({
       state.deliveryLocation = '';
     }
     const orderNow = async (rowProduct) => {
-      console.log(state.rowProduct, 'qwertyjhgfdsdfghj');
+      console.log(state.rowProduct, 'orderNowwww');
       state.isComponentModalActive = false;
-      state.rowProduct.price = parseInt(state.rowProduct.price * state.quantity);
       const orderedProduct = await pro.purchaseProducts({
-        ...state.rowProduct,
+        name:state.rowProduct.name,
+        model:state.rowProduct.model,
+        price:state.rowProduct.price,
         quantity: state.quantity,
         deliveryLocation: state.deliveryLocation,
-        owner: store.state.loggedInUser.name
+        product: state.rowProduct._id,
+        user: store.state.loggedInUser._id
       });
-      console.log(state.user, 'iddddd');
+      console.log(state.rowProduct, 'iddddd');
       toast.success('product ordered successfuly');
-      await addToCart();
       close();
       console.log(orderedProduct, 'ooooooooooooo');
     };
     const logOut = async() => {
       localStorage.removeItem('auth-token', store.state.loggedInUser.token);
       router.push({ path: '/' });
+    }
+    const searchProduct = async () =>{
+      await loadData();
+      state.cardLoaded = true;
+      if(state.search == ''){
+      window.location.reload()
+      }
     }
     const isDisabled = computed(() => store.state.loggedInUser.role === 'user');
     const isDisabled1 = computed(() => store.state.loggedInUser.role === 'admin');
@@ -194,7 +214,8 @@ export default defineComponent({
       close,
       isDisabled,
       isDisabled1,
-      logOut
+      logOut,
+      searchProduct
     };
   },
 });
@@ -213,5 +234,24 @@ export default defineComponent({
 .icon{
   margin-left: 1200px;
   
+}
+input{
+width: 20%;
+  padding: 7px 10px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-left: 7px;
+}
+.search{
+  width: 10%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-left: 7px;
 }
 </style>

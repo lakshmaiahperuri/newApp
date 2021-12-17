@@ -12,7 +12,7 @@ export default {
 
   // Adding a product
   createUser(user) {
-    return apiServer.post('/posts/userAdd',
+    return apiServer.post('/products/userAdd',
       {
         id: user.id,
         name: user.name,
@@ -24,7 +24,7 @@ export default {
   },
   // Getting list of all the products
   login(user) {
-    return apiServer.post('/posts/login',
+    return apiServer.post('/products/login',
       {
         email: user.email,
         password: user.password,

@@ -12,7 +12,7 @@ export default {
 
   // Adding a product
   createProduct(product) {
-    return apiServer.post('/posts/productAdd',
+    return apiServer.post('/products/productAdd',
       {
         id: product.id,
         name: product.name,
@@ -22,36 +22,35 @@ export default {
       });
   },
   // Getting list of all the products
-  productList() {
-    return apiServer.get('/posts/productList/');
-  },
-  productListBySearch(search) {
-    return apiServer.get(`/posts/productList/${search}`);
+  productList(params) {
+    return apiServer.get('/products/productList/', { params });
   },
   deleteProduct(id) {
-    return apiServer.delete(`/posts/delete/${id}`);
+    return apiServer.delete(`/products/delete/${id}`);
   },
   purchaseProducts(product) {
-    return apiServer.post('posts/purchase', {
+    return apiServer.post('products/purchase', {
       id: product.id,
       name: product.name,
       price: product.price,
       model: product.model,
       quantity: product.quantity,
       deliveryLocation: product.deliveryLocation,
-      owner: product.owner,
+      user: product.user,
+      product:product.product
     });
   },
   // getting purchased productList
-  getPurchasedList() {
-    return apiServer.get('/posts/purchasedProducts/');
+  getPurchasedList(params) {
+    return apiServer.get('/products/purchasedProducts/', { params });
+    console.log(params, 'serverrrrrrrrrrrrrrrrr');
   },
   // count for all the products
   getProductCount() {
-    return apiServer.get('/posts/productCount');
+    return apiServer.get('/products/productCount');
   },
   // count for all the purchased products
   getPurchaseCount() {
-    return apiServer.get('/posts/purchaseCount');
+    return apiServer.get('/products/purchaseCount');
   },
 };

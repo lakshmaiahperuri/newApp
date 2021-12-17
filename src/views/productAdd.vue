@@ -26,9 +26,13 @@ import { reactive, toRefs } from 'vue';
 // import vueValidate from'vee-validate'
 import products from '../services/products';
 import { Product } from '../services/productData';
+import { useToast } from 'vue-toastification';
+import { useRouter } from 'vue-router';
 // Vue.use(vueValidate);
 export default ({
   setup() {
+    const toast = useToast();
+    const router = useRouter();
     const state = reactive({
       name: '',
       price: '',
@@ -42,6 +46,8 @@ export default ({
       const product = await products.createProduct({
         name: state.name, price: state.price, model: state.model,
       });
+      toast.success('Product added successfully');
+      router.push({ path: '/menu' });
       console.log(product, 'Lakhsm');
     };
     return {

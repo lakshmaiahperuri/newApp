@@ -4,7 +4,8 @@
   <div class="hero-body">
     <div class="container">
       <div class="columns is-centered">
-        <div class="column is-6-tablet is-6-desktop is-5-widescreen">
+        <div class="column is-4-tablet is-6-desktop is-5-widescreen">
+          <div class="card">
           <form action="" class="box">
             <div class="field">
               <label for="" class="label">Email</label>
@@ -30,10 +31,10 @@
               <button class="button is-success" @click.prevent="loginUser()">
                 Login
               </button>
-               <o-icon pack="fas" icon="user" size="small"> </o-icon>
-              <router-link to="/addingUser"><span class="icon"></span><b>Create New Account</b></router-link>
+              <router-link to="/addingUser"><span class="icon" id= "create"></span><b>Create New Account</b></router-link>
             </div>
           </form>
+          </div>
         </div>
       </div>
     </div>
@@ -88,3 +89,14 @@ export default ({
 });
 
 </script>
+<style scoped>
+.hero{
+  background-image: linear-gradient(to right bottom,#ffffff,#6dd5fa,#2980b9);
+}
+section{
+  height: 100vh;
+}
+#create{
+
+}
+</style>
