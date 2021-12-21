@@ -22,3 +22,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+To run server code 
+vue3Project/booking/server
+this is path and command is **npm start.**
