@@ -24,10 +24,10 @@
 <script>
 import { reactive, toRefs } from 'vue';
 // import vueValidate from'vee-validate'
-import products from '../services/products';
-import { Product } from '../services/productData';
 import { useToast } from 'vue-toastification';
 import { useRouter } from 'vue-router';
+import products from '../services/products';
+import { Product } from '../services/productData';
 // Vue.use(vueValidate);
 export default ({
   setup() {

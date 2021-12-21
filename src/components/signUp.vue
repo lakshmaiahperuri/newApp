@@ -29,9 +29,10 @@
 
 <script>
 import { reactive, toRefs } from 'vue';
-import users from '../services/users';
 import { useToast } from 'vue-toastification';
 import { useRouter } from 'vue-router';
+import users from '../services/users';
+
 export default ({
   setup() {
     const toast = useToast();
@@ -50,7 +51,7 @@ export default ({
       const user = await users.createUser({
         name: state.name, email: state.email, mobile: state.mobile, password: state.password, role: 'admin',
       });
-      toast.success('user added ')
+      toast.success('user added ');
       router.push({ path: '/' });
     };
     return {

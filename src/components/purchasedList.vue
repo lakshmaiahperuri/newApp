@@ -22,12 +22,12 @@ import {
 } from 'vue';
 import { useStore, mapState } from 'vuex';
 import pro from '../services/products';
-import navBar from '../components/navBar.vue';
+import navBar from './navBar.vue';
 
 export default defineComponent({
   name: 'productList',
   components: {
-    'mf-nav': navBar
+    'mf-nav': navBar,
   },
   setup() {
     const products = ref([]);
@@ -35,7 +35,7 @@ export default defineComponent({
     const state = reactive({
       tableData: [],
       rowProduct: {},
-      user:'',
+      user: '',
       deliveryLocation: '',
       owner: 'Lakshmaiah',
       cardLoaded: false,
@@ -73,9 +73,9 @@ export default defineComponent({
     });
     const loadData = async () => {
       const data = await pro.getPurchasedList({
-        user: store.state.loggedInUser._id
+        user: store.state.loggedInUser._id,
       });
-      console.log('storeeeeeeee', state.user)
+      console.log('storeeeeeeee', state.user);
       state.tableData = data.data;
       state.cardLoaded = true;
       return state.tableData;

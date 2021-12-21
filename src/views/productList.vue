@@ -9,7 +9,7 @@
     <button class="button">My Orders </button>
     </router-link></span>
   <span ><o-button class="button" @click="logOut()">LogOut </o-button></span>
-    <span class="icon-text" @click="logOut()"> 
+    <span class="icon-text" @click="logOut()">
   <span class="icon">
   </span>
 </span> -->
@@ -85,15 +85,16 @@ import { useRouter } from 'vue-router';
 import {
   defineComponent, ref, reactive, onMounted, toRefs, $oruga, computed,
 } from 'vue';
+import { useToast } from 'vue-toastification';
 import pro from '../services/products';
 import Product from '../services/productData';
 import modal from '../components/navBar.vue';
-import { useToast } from 'vue-toastification';
 import navBar from '../components/navBar.vue';
+
 export default defineComponent({
   name: 'productList',
   components: {
-    'mf-nav': navBar
+    'mf-nav': navBar,
   },
   setup() {
     const products = ref([]);
@@ -102,7 +103,7 @@ export default defineComponent({
     const router = useRouter();
     const state = reactive({
       tableData: [],
-      search:'',
+      search: '',
       userName: '',
       userRole: '',
       rowProduct: {},
@@ -142,7 +143,7 @@ export default defineComponent({
     });
     const loadData = async () => {
       const data = await pro.productList({
-        search: state.search
+        search: state.search,
       });
       state.tableData = data.data;
       state.cardLoaded = true;
@@ -152,7 +153,7 @@ export default defineComponent({
     const deleteProduct = async (id) => {
       console.log('Lakshma');
       await pro.deleteProduct(id);
-      toast.error('Product deleted')
+      toast.error('Product deleted');
       state.cardLoaded = false;
       await loadData();
       console.log('Lakshma');
@@ -164,39 +165,39 @@ export default defineComponent({
       state.rowProduct.id = product;
       console.log('product iddddddd', state.rowProduct._id);
     };
-    const close = () =>{
+    const close = () => {
       state.isComponentModalActive = false;
-      state.quantity = '', 
+      state.quantity = '',
       state.deliveryLocation = '';
-    }
+    };
     const orderNow = async (rowProduct) => {
       console.log(state.rowProduct, 'orderNowwww');
       state.isComponentModalActive = false;
       const orderedProduct = await pro.purchaseProducts({
-        name:state.rowProduct.name,
-        model:state.rowProduct.model,
-        price:state.rowProduct.price,
+        name: state.rowProduct.name,
+        model: state.rowProduct.model,
+        price: state.rowProduct.price,
         quantity: state.quantity,
         deliveryLocation: state.deliveryLocation,
         product: state.rowProduct._id,
-        user: store.state.loggedInUser._id
+        user: store.state.loggedInUser._id,
       });
       console.log(state.rowProduct, 'iddddd');
       toast.success('product ordered successfuly');
       close();
       console.log(orderedProduct, 'ooooooooooooo');
     };
-    const logOut = async() => {
+    const logOut = async () => {
       localStorage.removeItem('auth-token', store.state.loggedInUser.token);
       router.push({ path: '/' });
-    }
-    const searchProduct = async () =>{
+    };
+    const searchProduct = async () => {
       await loadData();
       state.cardLoaded = true;
-      if(state.search == ''){
-      window.location.reload()
+      if (state.search == '') {
+        window.location.reload();
       }
-    }
+    };
     const isDisabled = computed(() => store.state.loggedInUser.role === 'user');
     const isDisabled1 = computed(() => store.state.loggedInUser.role === 'admin');
     onMounted(async () => {
@@ -205,17 +206,17 @@ export default defineComponent({
       console.log('store', store.state.loggedInUser);
     });
     return {
-      products, 
-      ...toRefs(state), 
-      loadData, 
-      deleteProduct, 
-      addToCart, 
-      orderNow, 
+      products,
+      ...toRefs(state),
+      loadData,
+      deleteProduct,
+      addToCart,
+      orderNow,
       close,
       isDisabled,
       isDisabled1,
       logOut,
-      searchProduct
+      searchProduct,
     };
   },
 });
@@ -226,14 +227,14 @@ export default defineComponent({
   background-color: blueviolet
 }
 .header{
-  
+
 }
 #button1{
   margin-right: 15px;
 }
 .icon{
   margin-left: 1200px;
-  
+
 }
 input{
 width: 20%;

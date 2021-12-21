@@ -37,7 +37,7 @@ export default {
       quantity: product.quantity,
       deliveryLocation: product.deliveryLocation,
       user: product.user,
-      product:product.product
+      product: product.product,
     });
   },
   // getting purchased productList

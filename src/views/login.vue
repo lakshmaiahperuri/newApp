@@ -46,8 +46,8 @@
 import { reactive, toRefs } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import users from '../services/users';
 import { useToast } from 'vue-toastification';
+import users from '../services/users';
 
 export default ({
   setup() {
@@ -62,15 +62,15 @@ export default ({
       console.log('aaaaaaaaaaaa', {
         name: state.name, email: state.email, mobile: state.mobile, password: state.password,
       });
-      if(!state.email && !state.password) {
-      toast.error('invalid credentials');
+      if (!state.email && !state.password) {
+        toast.error('invalid credentials');
       }
       const { data } = await users.login({
         email: state.email, password: state.password,
       });
-      const token = data.token;
+      const { token } = data;
       toast.success('LoggedIn Successfully');
-      console.log(token, 'oopppps')
+      console.log(token, 'oopppps');
       store.commit('setLoggedInUser', data.user);
       localStorage.setItem('auth-token', token);
       console.log('userrrrrrrrrrrrr', data.user.role);

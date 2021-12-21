@@ -47,6 +47,7 @@
 import { reactive, toRefs } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+
 export default ({
   setup() {
     const store = useStore();
@@ -56,7 +57,7 @@ export default ({
       router.push({ path: '/' });
     };
     return {
-      
+
       logOut,
     };
   },
